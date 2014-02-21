@@ -12,9 +12,9 @@ def wait():
 	print ""
 	x = raw_input("Press <enter> to continue...")
 
-def oops(d):
-	print "Oops! This is probably because your p and q were so small. Currently d = " + str(d) + ". This \
-corresponds to " + str(int(math.log(d)/math.log(2))) + " bit encryption. The current standard for the \
+def oops(n):
+	print "Oops! This is probably because your p and q were so small. Currently n = " + str(n) + ". This \
+corresponds to " + str(int(math.log(n)/math.log(2))) + " bit encryption. The current standard for the \
 internet is 128 bit encryption. That corresponds to a decimal number with 38 digits and requires some \
 rather large prime numbers. Try another message."
 
@@ -94,23 +94,23 @@ m will be broken up in to chunks."
 
 	# 2) encrypt the message as m^e mod phi
 	print ""
-	print "2) Encrypt the message using the public key: eMsg = m^e mod phi(n)."
+	print "2) Encrypt the message using the public key: eMsg = m^e mod n."
 	eMsg = int(divmod(pow(m,e),n)[1])
 	print "eMsg = " + str(eMsg)
 	if (eMsg == m):
 		print ""
-		oops(d)
+		oops(n)
 		wait()
 		continue
 	wait()
 	# 3) dencrypt the message as eMsg^d mod phi
 	print ""
-	print "3) Deccrypt the message using the private key: dMsg = eMsg^2 mod phi(n)."
+	print "3) Deccrypt the message using the private key: dMsg = eMsg^d mod n."
 	dMsg = int(divmod(pow(eMsg,d),n)[1])
 	print "dMsg = " + str(dMsg)
 	print ""
 	if (m != dMsg):
-		oops(d)
+		oops(n)
 	x = raw_input("Shall we encrypt another? control-c to quit.")
 	print ""
 
