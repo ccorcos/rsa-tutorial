@@ -1,0 +1,5 @@
+To compile into a commandline tool, use pyinstaller.
+
+pip install pyinstaller
+pyi-makespec --onefile rsa_cmdline.py 
+pyi-build rsa_cmdline.spec 
