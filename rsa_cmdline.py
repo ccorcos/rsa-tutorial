@@ -18,6 +18,33 @@ corresponds to " + str(int(math.log(n)/math.log(2))) + " bit encryption. The cur
 internet is 128 bit encryption. That corresponds to a decimal number with 38 digits and requires some \
 rather large prime numbers. Try another message."
 
+# recursive extended euclidian algorithm
+def egcd(a,b):
+	if a == 0:
+		return (b,0,1)
+	else:
+		g,y,x = egcd(b % a, a)
+		return (g, x - (b // a)*y, y)
+
+# multiplicative modular inverse
+def modinv(a,m):
+	g,x,y = egcd(a,m)
+	if g != 1:
+		return None
+	else:
+		return x%m
+
+# modular exponentiation by squaring
+def powmod(b,e,m):
+	x=1
+	bits = "{0:b}".format(e)
+	for i,bit in enumerate(bits):
+		if bit=='1':
+			x = ((x**2)*b)%m
+		elif bit=='0':
+			x = (x**2)%m
+	return x%m
+
 ## COMPUTING THE KEYS
 # 1) Choose 2 distinct prime numbers, p and q.
 print ""
@@ -56,15 +83,8 @@ e = int(raw_input("e = "))
 # d is keps as the "private key exponent"
 print ""
 print "5) Find d by computing the multiplicative modular inverse, that is, solve for d where: e*d mod \
-phi = 1. d is kept as the private key exponent. There are more efficient ways of computing d, but here's \
-how I implemented it in python:"
-print ""
-print ">>> d = 1"
-print ">>> while int(divmod(e*d,phi)[1]) != 1:"
-print "...     d = d+1"
-d = 1
-while int(divmod(e*d,phi)[1]) != 1:
-	d = d+1
+phi = 1. d is kept as the private key exponent."
+d = modinv(e,phi)
 print ""
 print "d = " + str(d)
 wait()
@@ -95,7 +115,7 @@ m will be broken up in to chunks."
 	# 2) encrypt the message as m^e mod phi
 	print ""
 	print "2) Encrypt the message using the public key: eMsg = m^e mod n."
-	eMsg = int(divmod(pow(m,e),n)[1])
+	eMsg = powmod(m,e,n)
 	print "eMsg = " + str(eMsg)
 	if (eMsg == m):
 		print ""
@@ -106,7 +126,7 @@ m will be broken up in to chunks."
 	# 3) dencrypt the message as eMsg^d mod phi
 	print ""
 	print "3) Deccrypt the message using the private key: dMsg = eMsg^d mod n."
-	dMsg = int(divmod(pow(eMsg,d),n)[1])
+	dMsg = powmod(eMsg,d,n)
 	print "dMsg = " + str(dMsg)
 	print ""
 	if (m != dMsg):
