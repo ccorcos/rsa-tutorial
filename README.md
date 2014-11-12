@@ -7,6 +7,8 @@ you can run.
 
 `rsa.py` contains efficient algorithms and also walks you through creating a public-private key pair and encrypting and decrypting messages.
 
+![](/rsa.png)
+
 ## Getting Started
 
     git clone https://github.com/ccorcos/rsa-tutorial.git
